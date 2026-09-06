@@ -78,3 +78,4 @@ if __name__ == "__main__":
                       print(f" - [INFO] Achado extraído: {item}")
            else:
                print(f"- [INFO] Achado genérico: {item}") 
+

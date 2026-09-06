@@ -13,14 +13,14 @@ def resolver_host(domain):
        # Ocorre quando o subdominio/host não existe ou não responde ao DNS
        return None
 
-def mapear_subdominios(dominio_alvo, lista_subdominios):
-    print(f"[*] Iniciando reconhecimento em: {dominio_alvo}\n")
+def map_subdomains(domains_target, list_subdomains):
+    print(f"[*] Iniciando reconhecimento em: {domains_target}\n")
 
     resultados = {}
 
-    for sub in lista_subdominios:
+    for sub in list_subdomains:
         # Concatena o subdominio ao dominio alvo (ex: api.empresa.com.br)
-        alvo_completo = f"{sub}.{dominio_alvo}"
+        alvo_completo = f"{sub}.{domains_target}"
         ip = resolver_host(alvo_completo)
 
         if ip:
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     # Wordlist simplificada de subdominios comuns para validação inicial
    wordlist_teste = ["www", "api", "dev", "mail", "admin", "test", "vpn"]
 
-   resultado_final = mapear_subdominios(dominio, wordlist_teste)
+   resultado_final = map_subdomains(dominio, wordlist_teste)
 
    print("\n[=] Mapeamento Concluído:")
    print(resultado_final)
