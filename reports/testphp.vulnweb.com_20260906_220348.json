@@ -1,0 +1,12 @@
+{
+    "domain": "testphp.vulnweb.com",
+    "timestamp": "2026-09-06T22:02:58.555081",
+    "total_subdomains_actives": 1,
+    "actives": {
+        "testphp.vulnweb.com": {
+            "ip": "44.228.249.3",
+            "open_ports": [],
+            "vulnerabilities": []
+        }
+    }
+}
