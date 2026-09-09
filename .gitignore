@@ -1,3 +1,10 @@
+
+# Relatorios e scans de teste
+reports/*.json
+reports/*.md
+resultado.json
+
+# Cache do Python e amb. virtuais
 __pycache__/
 *.pyc
 .env
