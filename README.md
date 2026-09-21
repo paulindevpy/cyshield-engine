@@ -1,65 +1,31 @@
-<div align="center">
+# 🛡️ CyShield Engine v2.0 Enterprise
 
-# 🛡️ CyShield Engine v1.0 - Paullo Eduardo
-
-**Next-Gen Asynchronous Cybersecurity Reconnaissance & AI Vulnerability Assessment Pipeline**
-
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-active--v1.0-emerald.svg)]()
-[![AI Powered](https://img.shields.io/badge/AI-Anthropic%20Claude-purple.svg)](https://www.anthropic.com/)
-
----
-
-</div>
-
-## 📌 Sobre o Projeto
-
-O **CyShield Engine** é um motor assíncrono modular desenvolvido em Python projetado para automação avançada de segurança cibernética, reconhecimento de superfície de ataque (**Recon**) e análise executiva de riscos impulsionada por Inteligência Artificial (**Anthropic Claude API**).
-
-Projetado para profissionais de **Red Team**, analistas de **AppSec** e **Consultores de Cibersegurança**, a ferramenta automatiza a descoberta de infraestrutura, varredura de portas TCP, validação de vulnerabilidades conhecidas (CVEs via Nuclei) e compila relatórios estratégicos para o nível executivo (*C-Level*).
-
----
-
-## ⚡ Principais Funcionalidades
-
-- **🔍 Recon Mapeado:** Identificação e enumeração ativa e passiva de subdomínios.
-- **⚡ Fast Async PortScan:** Varredura rápida de portas TCP/UDP aproveitando concorrência nativa com `asyncio`.
-- **🛡️ Nuclei Scan Integration:** Execução de templates do Nuclei para identificação precisa de CVEs e misconfigurations.
-- **🤖 Executive Risk AI Report:** Análise inteligente de risco via **Claude API** que converte dados brutos (JSON) em relatórios executivos em Markdown (`.md`).
-- **🔒 Security First:** Gestão segura de segredos e credenciais via variáveis de ambiente (`os.getenv`).
+> **Asynchronous Security Reconnaissance & Vulnerability Assessment Platform**  
+> Motor de auditoria de segurança assíncrono e contínuo para ecossistemas web e infraestrutura em nuvem.
 
 ---
 
 ## 🏗️ Arquitetura do Sistema
 
-```text
-               ┌──────────────────────────────────────────────┐
-               │         CyShield Core CLI Engine             │
-               │         (cyshield_core.py)                   │
-               └──────────────────────┬───────────────────────┘
-                                      │
-         ┌────────────────────────────┼────────────────────────────┐
-         ▼                            ▼                            ▼
-┌──────────────────┐        ┌──────────────────┐        ┌──────────────────┐
-│    recon.py      │        │   portscan.py    │        │   vulnscan.py    │
-│  (Subdomains)    │        │ (Async PortScan) │        │ (Nuclei Engine)  │
-└────────┬─────────┘        └────────┬─────────┘        └────────┬─────────┘
-         │                           │                           │
-         └───────────────────────────┴───────────────────────────┘
-                                     │
-                                     ▼
-                      ┌─────────────────────────────┐
-                      │    Relatório JSON Bruto     │
-                      └──────────────┬──────────────┘
-                                     │ (Flag --ai)
-                                     ▼
-                      ┌─────────────────────────────┐
-                      │       ai_reports.py         │
-                      │  (API Anthropic Claude)     │
-                      └──────────────┬──────────────┘
-                                     │
-                                     ▼
-                      ┌─────────────────────────────┐
-                      │   Relatório Executivo .md   │
-                      └─────────────────────────────┘
+```mermaid
+flowchart TD
+    A[config.yaml] --> B[cyshield_core.py - Async Core Engine]
+    C[Targets Input / -t] --> B
+    
+    subgraph Engine Pipeline
+        B --> D[recon.py - Passive/Active DNS]
+        B --> E[portscan.py & vulnscan.py]
+        B --> F[websearch.py - Tech Fingerprint]
+        B --> G[cloud_recon.py - Buckets S3/GCS/Azure]
+        B --> H[diff_engine.py - Historical Comparison]
+    end
+    
+    B --> I[storage.py - SQLite3 WAL Mode]
+    B --> J[reports/*.json & *.pdf]
+    
+    I --> K[(cyshield.db)]
+    
+    subgraph Exposição & Servidor
+        K --> L[dashboard.py - FastAPI REST Server]
+        L --> M[Frontend SaaS / Swagger UI]
+    end
