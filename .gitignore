@@ -1,11 +1,15 @@
+# Banco de dados e relatórios gerados
+cyshield.db
+cyshield.db-wal
+cyshield.db-shm
+reports/
 
-# Relatorios e scans de teste
-reports/*.json
-reports/*.md
-resultado.json
-
-# Cache do Python e amb. virtuais
+# Python & Ambientes
 __pycache__/
 *.pyc
-.env
 venv/
+.env
+
+# Arquivos temporários e alvos locais
+targets.txt
+subdominios.txt

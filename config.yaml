@@ -1,0 +1,32 @@
+concurrency:
+  max_hosts: 5
+  max_dns_threads: 50
+  max_http_requests: 10
+
+timeouts:
+  http_seconds: 10
+  nuclei_seconds: 600
+
+wordlists:
+  subdomains:
+    - www
+    - api
+    - dev
+    - staging
+    - mail
+    - vpn
+  permutations:
+    - dev
+    - stg
+    - prod
+    - test
+
+user_agents:
+  - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  - "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0"
+
+nuclei:
+  min_severity: "low"
+  flags:
+    - "-silent"
+    - "-nc"

@@ -2,57 +2,50 @@ import subprocess
 import json
 import os
 
+import subprocess
+import json
+
 def scanner_vuln(target_url):
     """
-    Executa o scanner Nuclei conta uma URL/Subdominio e retorna
-    as vulnerabilidades encontradas formatadas em Python.
+    Executa o Nuclei e retorna findings parseados.
+    v2: usa -jsonl no stdout (padrão atual do nuclei), sem arquivo temporário.
     """
     print(f"[*] Iniciando varredura de vulnerabilidades (Nuclei) em: {target_url}")
 
-    file_temp = "temp_nuclei.json"
-
-    # Comando executado no Kali
     command = [
         "nuclei",
         "-u", target_url,
         "-severity", "low,medium,high,critical",
-        "-json-export", file_temp,
-        "-silent"
-
-
+        "-jsonl",          # JSON lines no stdout (substitui -json-export)
+        "-silent",
+        "-nc",             # sem cor no output (essencial para o parse!)
     ]
     try:
-       # Executa o comando no SO atraves do Python
-       subprocess.run(command, check=True)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=600)
+        vulnerabilities = []
+        for line in result.stdout.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                dado = json.loads(line)
+                if isinstance(dado, dict) and dado.get("info"):
+                    vulnerabilities.append(dado)
+            except json.JSONDecodeError:
+                continue  # linha não-JSON (banner, etc.)
 
-       vulnerability = []
+        print(f"[+] Varredura concluída. Falhas encontradas: {len(vulnerabilities)}")
+        return vulnerabilities
 
-       # Se o Nuclei encontrou falhas e gerou o arquivo temporario
-       if os.path.exists(file_temp):
-           with open(file_temp, "r") as f:
-              for line in f:
-                  line_clear = line.strip()
-                  if line_clear:
-                     dado_parsed = json.loads(line_clear)
-       # Filro SÊNIOR: Apenas adiciona se for um dicionário VÁLIDO
-
-                     if isinstance(dado_parsed, dict) and dado_parsed:
-                      vulnerability.append(dados_parsed)
-
-       # Limpa o arquivo temporario no sistema
-           os.remove(file_temp)
-
-
-       print(f"[+] Varredura concluída. Falhas/alertas encontrados: {len(vulnerability)}")
-       return vulnerability
-
-    except subprocess.CalledProcessError as e:
-       print(f"[-] Erro ao executar o Nuclei: {e}")
-       return []
+    except subprocess.TimeoutExpired:
+        print(f"[!] Nuclei timeout em {target_url} (600s).")
+        return []
+    except FileNotFoundError:
+        print("[!] Nuclei não encontrado. Instale: go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest")
+        return []
     except Exception as e:
-       print(f"[-] Erro inesperado no scanner: {e}")
-       return []
-
+        print(f"[!] Erro inesperado no scanner: {e}")
+        return []
 
 if __name__ == "__main__":
     # Site de testes propositalmente vulneravel para validação
