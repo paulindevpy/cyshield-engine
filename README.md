@@ -40,6 +40,57 @@ A plataforma foi arquitetada do zero com foco em **baixo consumo de recursos, ze
 git clone [https://github.com/paulindevpy/cyshield-engine.git](https://github.com/paulindevpy/cyshield-engine.git)
 cd cyshield-engine
 pip install -r requirements.txt
+```
+
+### 2. Configuração dos Limites (config.yaml)
+concurrency:
+  max_hosts: 5
+  max_dns_threads: 50
+timeouts:
+  http_seconds: 10
+  nuclei_seconds: 600
+
+
+### 3. Executar o Scanner
+# Varredura simples em um alvo
+python3 cyshield_core.py -t scanme.nmap.org
+
+# Varredura com relatório executivo gerado por IA (Claude)
+ANTHROPIC_API_KEY="sk-ant-..." python3 cyshield_core.py -t scanme.nmap.org --ai
+
+
+🐳 Implantação com Docker
+A infraestrutura está 100% pronta para rodar em servidores na nuvem ou VPS:
+
+# Subir o ambiente completo
+docker-compose up -d --build
+
+# Executar scan isolado no container
+docker-compose run --rm cyshield-scanner -t scanme.nmap.org
+
+📊 Formato das Saídas (reports/)
+Os relatórios são salvos em JSON com metadados estruturados para integração:
+
+{
+  "engine": "CyShield Engine",
+  "version": "2.0-enterprise",
+  "domain": "scanme.nmap.org",
+  "timestamp": "2026-09-21T20:17:18",
+  "summary": {
+    "scan_duration_seconds": 178.6,
+    "hosts_scanned": 1,
+    "critical": 0,
+    "high": 1
+  },
+  "diff_vs_previous": {
+    "has_changes": false,
+    "compared_against": "20260921_193953"
+  }
+}
+
+
+⚠️ Aviso Legal / Disclaimer
+Esta ferramenta foi desenvolvida exclusivamente para fins educacionais, auditorias de segurança autorizadas e programas de Bug Bounty com escopo formalizado. O uso não autorizado contra infraestruturas de terceiros é ilegal. O desenvolvedor não se responsabiliza pelo uso indevido da plataforma.
 
 
 ## 🏗️ Arquitetura do Sistema
@@ -66,3 +117,4 @@ flowchart TD
         K --> L[dashboard.py - FastAPI REST Server]
         L --> M[Frontend SaaS / Swagger UI]
     end
+```
