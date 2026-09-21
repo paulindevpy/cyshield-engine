@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ CyShield Engine v1.0 - Paullo Eduardo
+# 🛡️ CyShield Engine v1.0 - Paulo Eduardo
 
 **Next-Gen Asynchronous Cybersecurity Reconnaissance & AI Vulnerability Assessment Pipeline**
 
