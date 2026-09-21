@@ -3,42 +3,15 @@
 > **Asynchronous Security Reconnaissance & Vulnerability Assessment Platform**  
 > Motor de auditoria de segurança assíncrono e contínuo para ecossistemas web e infraestrutura em nuvem.
 
----
-
-## 🏗️ Arquitetura do Sistema
-
-```mermaid
-flowchart TD
-    A[config.yaml] --> B[cyshield_core.py - Async Core Engine]
-    C[Targets Input / -t] --> B
-    
-    subgraph Engine Pipeline
-        B --> D[recon.py - Passive/Active DNS]
-        B --> E[portscan.py & vulnscan.py]
-        B --> F[websearch.py - Tech Fingerprint]
-        B --> G[cloud_recon.py - Buckets S3/GCS/Azure]
-        B --> H[diff_engine.py - Historical Comparison]
-    end
-    
-    B --> I[storage.py - SQLite3 WAL Mode]
-    B --> J[reports/*.json & *.pdf]
-    
-    I --> K[(cyshield.db)]
-    
-    subgraph Exposição & Servidor
-        K --> L[dashboard.py - FastAPI REST Server]
-        L --> M[Frontend SaaS / Swagger UI]
-    end
-
 <div align="center">
 
 # 🛡️ CyShield Engine v2.0 Enterprise
 
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![SQLite](https://img.shields.io/badge/SQLite-WAL%20Mode-003B57.svg)](https://www.sqlite.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
-[![License](https://img.shields.io/badge/license-Authorized%20Audit%20Only-red.svg)](#-aviso-legal--disclaimer)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)
+![SQLite](https://img.shields.io/badge/SQLite-WAL%20Mode-003B57.svg)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)
+![License](https://img.shields.io/badge/license-Authorized%20Audit%20Only-red.svg)
 
 **Asynchronous Attack Surface Management & Vulnerability Assessment Platform**
 
@@ -80,3 +53,31 @@ flowchart TD
         K --> L[dashboard.py - FastAPI REST Server]
         L --> M[Frontend SaaS / Swagger UI]
     end
+
+## 🏗️ Arquitetura do Sistema
+
+```mermaid
+flowchart TD
+    A[config.yaml] --> B[cyshield_core.py - Async Core Engine]
+    C[Targets Input / -t] --> B
+    
+    subgraph Engine Pipeline
+        B --> D[recon.py - Passive/Active DNS]
+        B --> E[portscan.py & vulnscan.py]
+        B --> F[websearch.py - Tech Fingerprint]
+        B --> G[cloud_recon.py - Buckets S3/GCS/Azure]
+        B --> H[diff_engine.py - Historical Comparison]
+    end
+    
+    B --> I[storage.py - SQLite3 WAL Mode]
+    B --> J[reports/*.json & *.pdf]
+    
+    I --> K[(cyshield.db)]
+    
+    subgraph Exposição & Servidor
+        K --> L[dashboard.py - FastAPI REST Server]
+        L --> M[Frontend SaaS / Swagger UI]
+    end
+
+<div align="center">
+
